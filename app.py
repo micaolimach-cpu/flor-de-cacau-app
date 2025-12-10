@@ -36,7 +36,7 @@ h1, h2, h3 {
 """, unsafe_allow_html=True)
 
 # --- Banner de entrada ---
-st.image("banner-brigadeiros.png", use_column_width=True)
+st.markdown("### Flor de Cacau 🍫")
 st.markdown("<h1 style='text-align: center;'>Flor de Cacau</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; font-size: 1.2rem;'>Kits de Brigadeiro para Eventos, Festas & Confraternizações</p>", unsafe_allow_html=True)
 
@@ -280,6 +280,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
