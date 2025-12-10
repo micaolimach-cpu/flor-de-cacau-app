@@ -36,6 +36,20 @@ h1, h2, h3 {
 div[data-testid="stNumberInput"] div input {
     text-align: center;
 }
+/* Estilo para garantir que o botão de confirmação tenha o estilo rosa */
+div.stButton button[data-testid*="stButton-primary"] {
+    background-color: #F8BBD0; 
+    color: #6B3E26; 
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    padding: 0.8rem 1.5rem;
+    width: 100%;
+    margin-top: 1rem;
+}
+div.stButton button[data-testid*="stButton-primary"]:hover {
+    background-color: #F48FB1; 
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -49,7 +63,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("---")
 
-# --- Nossos Kits Especiais (LAYOUT MELHORADO) ---
+# --- Nossos Kits Especiais (LAYOUT OTIMIZADO) ---
 st.subheader("🎁 Nossos Kits Especiais")
 
 kits = [
@@ -59,10 +73,10 @@ kits = [
     {"name": "Kit Mega", "desc": "Para festas e eventos maiores (100-1000 unidades)", "qty": 100, "price": 210.00},
 ]
 
-# Alterado de st.columns(3) para st.columns(2) para melhor simetria
+# Layout em 2 colunas para melhor simetria
 cols = st.columns(2) 
 for i, kit in enumerate(kits):
-    with cols[i % 2]: # Alterado de i % 3 para i % 2
+    with cols[i % 2]: 
         st.markdown(f"""
         <div style="
             background-color:#FFF0E6;
@@ -84,7 +98,7 @@ for i, kit in enumerate(kits):
 
 st.markdown("---")
 
-# --- Seleção de sabores (CUSTOMIZADA) ---
+# --- Seleção de sabores (CUSTOMIZADA E CORRIGIDA) ---
 if "kit_escolhido" in st.session_state:
     kit = st.session_state["kit_escolhido"]
 
@@ -114,17 +128,17 @@ if "kit_escolhido" in st.session_state:
         {"name": "Churros", "icon": "🍩"},
     ]
 
-    # CÁLCULO DE SOMA INICIAL para exibir o progresso
+    # CÁLCULO DE SOMA para exibir o progresso
     soma = sum(st.session_state.get(f"flavor_{flavor['name']}", 0) for flavor in flavors)
 
-    # BLOCO DE PROGRESSO COM ESTILO DE CAIXA
+    # BLOCO DE PROGRESSO COM ESTILO DE CAIXA (SÓ TEXTO)
     st.markdown(f"""
         <div style="
             background-color:#FFF5E6; 
             border:1px solid #FFD799; 
             border-radius:8px; 
             padding:10px; 
-            margin-bottom:1rem;
+            margin-bottom:0.5rem; /* Margem ajustada para inserir o progress bar abaixo */
         ">
             <p style='margin-bottom:0.5rem; font-weight:500;'>
                 Instruções: Selecione a quantidade de cada sabor até completar o total de unidades do kit
@@ -132,9 +146,12 @@ if "kit_escolhido" in st.session_state:
             <p style='margin:0; font-weight:600;'>Progresso: 
                 <span style='float:right;'>{soma} de {total_unidades} unidades</span>
             </p>
-            {st.progress(min(soma / total_unidades, 1.0))}
         </div>
     """, unsafe_allow_html=True)
+    
+    # BARRA DE PROGRESSO REAL (FORA DO MARKDOWN HTML para funcionar)
+    # CORREÇÃO APLICADA: Movemos st.progress para fora do bloco markdown
+    st.progress(min(soma / total_unidades, 1.0))
     
     # LAYOUT EM DUAS COLUNAS PARA SABORES
     selected_flavors = {}
@@ -178,27 +195,7 @@ if "kit_escolhido" in st.session_state:
 
     # Botão de confirmação
     if soma == total_unidades:
-        # Estilo de botão de confirmação similar ao da imagem (fundo rosa)
-        st.markdown(
-            """
-            <style>
-                /* Garante que o botão de confirmação tenha o estilo rosa */
-                div.stButton button[data-testid*="stButton-primary"] {
-                    background-color: #F8BBD0; /* Cor rosa clara */
-                    color: #6B3E26; /* Cor do texto marrom */
-                    border: none;
-                    border-radius: 8px;
-                    font-size: 1.1rem;
-                    padding: 0.8rem 1.5rem;
-                    width: 100%;
-                    margin-top: 1rem;
-                }
-                div.stButton button[data-testid*="stButton-primary"]:hover {
-                    background-color: #F48FB1; /* Rosa mais escuro no hover */
-                }
-            </style>
-            """, unsafe_allow_html=True
-        )
+        
         if st.button("Confirmar Adicionar ao Pedido", type="primary"):
             st.session_state["pedido"] = {
                 "kit": kit,
@@ -244,23 +241,37 @@ if "pedido" in st.session_state:
     if st.button("📲 Finalizar pedido no WhatsApp"):
         phone = "5551992860852"
         pedido = st.session_state["pedido"]
+        
+        # INÍCIO DA MENSAGEM DO WHATSAPP ORGANIZADA EM TÓPICOS
+        
+        # 1. Cabeçalho e Resumo do Kit
         message = "*🍫 NOVO PEDIDO - FLOR DE CACAU*\\n\\n"
-        message += f"Kit escolhido: {pedido['kit']['name']} ({pedido['kit']['qty']} unidades)\\n\\n"
+        message += "*--- RESUMO DO PEDIDO ---*\\n"
+        message += f"*- Kit:* {pedido['kit']['name']} ({pedido['kit']['qty']} unidades)\\n"
+        message += f"*- TOTAL:* R$ {pedido['kit']['price']:.2f}\\n\\n"
+
+        # 2. Seção de Sabores (Tópicos)
+        message += "*--- SABORES SELECIONADOS ---*\\n"
         for sabor, qtd in pedido["sabores"].items():
-            message += f"{qtd}x {sabor}\\n"
-        message += f"\\n*TOTAL: R$ {pedido['kit']['price']:.2f}*\\n"
+            message += f"*{qtd}x* {sabor}\\n" # Quantidade em negrito
+        message += "\\n"
+        
+        # 3. Detalhes do Cliente e Entrega (Tópicos)
+        message += "*--- DADOS DA ENTREGA/CLIENTE ---*\\n"
 
         if nome_cliente:
-            message += f"\\n👤 Cliente: {nome_cliente}"
+            message += f"*- Cliente:* {nome_cliente}\\n"
         if data_entrega:
-            message += f"\\n📅 Entrega: {data_entrega.strftime('%d/%m/%Y')}"
+            message += f"*- Data de Entrega:* {data_entrega.strftime('%d/%m/%Y')}\\n"
         if horario_entrega:
-            message += f"\\n⏰ Horário: {horario_entrega.strftime('%H:%M')}"
+            message += f"*- Horário:* {horario_entrega.strftime('%H:%M')}\\n"
         if entrega_opcao:
-            message += f"\\n🚚 Forma de entrega: {entrega_opcao}"
+            message += f"*- Forma de Entrega:* {entrega_opcao}\\n"
         if obs:
-            message += f"\\n📝 Observações: {obs}"
-
+            message += f"*- Observações:* {obs}\\n"
+            
+        # FIM DA MENSAGEM DO WHATSAPP ORGANIZADA
+        
         url = f"https://wa.me/{phone}?text={quote(message)}"
         st.markdown(f"[👉 Abrir WhatsApp]({url})", unsafe_allow_html=True)
 
@@ -300,3 +311,4 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+                               
