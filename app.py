@@ -50,6 +50,13 @@ div.stButton button[data-testid*="stButton-primary"] {
 div.stButton button[data-testid*="stButton-primary"]:hover {
     background-color: #F48FB1; 
 }
+
+/* Tenta forçar a barra de progresso a se renderizar corretamente */
+div[data-testid="stProgress"] {
+    margin-top: -10px; /* Puxa para cima para grudar no bloco de texto */
+    margin-bottom: 1rem;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -131,15 +138,13 @@ if "kit_escolhido" in st.session_state:
     # CÁLCULO DE SOMA para exibir o progresso
     soma = sum(st.session_state.get(f"flavor_{flavor['name']}", 0) for flavor in flavors)
 
-    # BLOCO DE PROGRESSO COM ESTILO DE CAIXA (CORREÇÃO APLICADA AQUI)
-    # A string HTML agora usa .format() para inserir os valores (soma/total_unidades)
+    # BLOCO DE PROGRESSO COM ESTILO DE CAIXA (TEXTO E CONTADOR)
     st.markdown(f"""
         <div style="
             background-color:#FFF5E6; 
             border:1px solid #FFD799; 
             border-radius:8px; 
-            padding:10px 10px 5px 10px; /* Padding ajustado */
-            margin-bottom:0.5rem;
+            padding:10px 10px 5px 10px; 
         ">
             <p style='margin-bottom:0.5rem; font-weight:500;'>
                 Instruções: Selecione a quantidade de cada sabor até completar o total de unidades do kit
@@ -151,6 +156,7 @@ if "kit_escolhido" in st.session_state:
     """, unsafe_allow_html=True)
     
     # BARRA DE PROGRESSO REAL (Chamada como um componente Streamlit separado)
+    # O CSS no topo garante que ela "grude" na caixa de texto
     st.progress(min(soma / total_unidades, 1.0))
     
     # LAYOUT EM DUAS COLUNAS PARA SABORES
@@ -242,34 +248,36 @@ if "pedido" in st.session_state:
         phone = "5551992860852"
         pedido = st.session_state["pedido"]
         
-        # INÍCIO DA MENSAGEM DO WHATSAPP ORGANIZADA EM TÓPICOS
+        # INÍCIO DA MENSAGEM DO WHATSAPP ORGANIZADA EM TÓPICOS (ESTILO MELHORADO)
         
-        # 1. Cabeçalho e Resumo do Kit
-        message = "*🍫 NOVO PEDIDO - FLOR DE CACAU*\\n\\n"
-        message += "*--- RESUMO DO PEDIDO ---*\\n"
+        message = "*🍫 NOVO PEDIDO - FLOR DE CACAU*\\n"
+        message += "*--------------------------*\\n\\n"
+        
+        # 1. Resumo do Kit
+        message += "➡️ *RESUMO DO PEDIDO*\\n"
         message += f"*- Kit:* {pedido['kit']['name']} ({pedido['kit']['qty']} unidades)\\n"
-        message += f"*- TOTAL:* R$ {pedido['kit']['price']:.2f}\\n\\n"
+        message += f"*- VALOR TOTAL:* R$ {pedido['kit']['price']:.2f}\\n\\n"
 
-        # 2. Seção de Sabores (Tópicos)
-        message += "*--- SABORES SELECIONADOS ---*\\n"
+        # 2. Seção de Sabores
+        message += "➡️ *SABORES E QUANTIDADES*\\n"
         for sabor, qtd in pedido["sabores"].items():
             message += f"*{qtd}x* {sabor}\\n" 
         message += "\\n"
         
-        # 3. Detalhes do Cliente e Entrega (Tópicos)
-        message += "*--- DADOS DA ENTREGA/CLIENTE ---*\\n"
+        # 3. Detalhes do Cliente e Entrega
+        message += "➡️ *DADOS DE ENTREGA/CLIENTE*\\n"
 
         if nome_cliente:
             message += f"*- Cliente:* {nome_cliente}\\n"
         if data_entrega:
-            message += f"*- Data de Entrega:* {data_entrega.strftime('%d/%m/%Y')}\\n"
+            message += f"*- Data:* {data_entrega.strftime('%d/%m/%Y')}\\n"
         if horario_entrega:
             message += f"*- Horário:* {horario_entrega.strftime('%H:%M')}\\n"
         if entrega_opcao:
-            message += f"*- Forma de Entrega:* {entrega_opcao}\\n"
+            message += f"*- Modalidade:* {entrega_opcao}\\n"
         if obs:
             message += f"*- Observações:* {obs}\\n"
-            
+        
         # FIM DA MENSAGEM DO WHATSAPP ORGANIZADA
         
         url = f"https://wa.me/{phone}?text={quote(message)}"
