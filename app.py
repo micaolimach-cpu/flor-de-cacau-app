@@ -186,7 +186,7 @@ st.markdown("""
     <h4 style="color:#6B3E26;">💳 Formas de Pagamento</h4>
     <p>✔️ Aceitamos cartões: Visa, MasterCard, Elo, Hipercard</p>
     <p>✔️ Pagamento via <b>PIX</b></p>
-    # --- Rodapé ---
+  # --- Rodapé ---
 st.markdown("""
 <div style="
     background-color:#6B3E26;
@@ -196,8 +196,8 @@ st.markdown("""
     border-radius:8px;
     margin-top:2rem;
 ">
-    &copy; 2025 Flor de Cacau Confeitaria - Ingredientes frescos, produtores locais e chocolate nobre.<br>
-    Feito com ❤️ em Porto Alegre - RS<br>
+    &copy; 2025 Flor de Cacau Confeitaria — Ingredientes frescos, produtores locais e chocolate nobre.<br>
+    Feito com ❤️ em Esteio - RS<br>
     📍 Endereço: Avenida Antonio de Carvalho, 2600 - Ap 170<br>
     <a href="https://www.instagram.com/confeitariaflordcacau/" target="_blank" style="color:#FFD700; text-decoration:none;">
         📸 Instagram: @confeitariaflordcacau
