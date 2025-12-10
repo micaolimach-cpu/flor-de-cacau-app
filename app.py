@@ -35,7 +35,7 @@ h1, h2, h3 {
 </style>
 """, unsafe_allow_html=True)
 
-# --- Banner de entrada ---
+# --- Banner ---
 st.markdown("<h1 style='text-align: center;'>Flor de Cacau</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: center; font-size: 1.2rem;'>Kits de Brigadeiro para Eventos, Festas & Confraternizações</p>", unsafe_allow_html=True)
 
@@ -45,7 +45,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("---")
 
-# --- Nossos Kits Especiais ---
+# --- Nossos Kits ---
 st.subheader("🎁 Nossos Kits Especiais")
 
 kits = [
@@ -83,7 +83,6 @@ st.markdown("---")
 if "kit_escolhido" in st.session_state:
     kit = st.session_state["kit_escolhido"]
 
-    # Kit Mega: cliente define quantidade entre 100 e 1000
     if kit["name"] == "Kit Mega":
         qtd_mega = st.number_input("Quantidade de brigadeiros", min_value=100, max_value=1000, step=10)
         kit["qty"] = qtd_mega
@@ -191,8 +190,8 @@ pagamentos_html = """
 st.markdown(pagamentos_html, unsafe_allow_html=True)
 
 # --- Rodapé ---
-footer_html = ""
-<div style=
+footer_html = """
+<div style="
     background-color:#6B3E26;
     color:white;
     text-align:center;
@@ -207,7 +206,5 @@ footer_html = ""
         📷 Instagram: @flordecacau
     </a>
 </div>
-""
-
+"""
 st.markdown(footer_html, unsafe_allow_html=True)
-
