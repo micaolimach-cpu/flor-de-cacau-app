@@ -32,9 +32,11 @@ h1, h2, h3 {
     border: 1px solid #D2B48C;
     border-radius: 6px;
 }
+/* Centraliza o texto do input numérico */
 div[data-testid="stNumberInput"] div input {
     text-align: center;
 }
+/* Botão de confirmação rosa */
 div.stButton button[data-testid*="stButton-primary"] {
     background-color: #F8BBD0; 
     color: #6B3E26; 
@@ -149,7 +151,7 @@ if "kit_escolhido" in st.session_state:
         </div>
     """, unsafe_allow_html=True)
     
-    # 2. Barra de Progresso (FORA do markdown para evitar erro DeltaGenerator)
+    # 2. Barra de Progresso (FORA do markdown)
     st.progress(min(soma / total_unidades, 1.0))
     
     # Inputs dos sabores
@@ -232,7 +234,6 @@ if "pedido" in st.session_state:
         pedido = st.session_state["pedido"]
         
         # --- MONTAGEM DA MENSAGEM (Método Seguro) ---
-        # Usamos uma lista para evitar erros com \n
         lines = []
         lines.append("*🍫 NOVO PEDIDO - FLOR DE CACAU*")
         lines.append("--------------------------")
@@ -263,7 +264,23 @@ if "pedido" in st.session_state:
 
 st.markdown("---")
 
-# --- Rodapé ---
+# --- Pagamentos aceitos ---
+st.markdown("""
+<div style="
+    background-color:#FFF0E6;
+    border:1px solid #E0C4A8;
+    border-radius:12px;
+    padding:1rem;
+    text-align:center;
+    margin-bottom:1rem;
+">
+    <h4 style="color:#6B3E26;">💳 Formas de Pagamento</h4>
+    <p>✔️ Aceitamos cartões: Visa, MasterCard, Elo, Hipercard</p>
+    <p>✔️ Pagamento via <b>PIX</b></p>
+</div>
+""", unsafe_allow_html=True)
+
+# --- Rodapé (RESTAURADO) ---
 st.markdown("""
 <div style="
     background-color:#6B3E26;
@@ -273,7 +290,11 @@ st.markdown("""
     border-radius:8px;
     margin-top:2rem;
 ">
-    &copy; 2025 Flor de Cacau Confeitaria<br>
-    📍 Porto Alegre - RS
+    &copy; 2025 Flor de Cacau Confeitaria - Ingredientes frescos, produtores locais e chocolate nobre.<br>
+    Feito com ❤️ em Porto Alegre - RS<br>
+    📍 Endereço: Avenida Antonio de Carvalho, 2600 - Ap 170<br>
+    <a href="https://www.instagram.com/confeitariaflordcacau/" target="_blank" style="color:#FFD700; text-decoration:none;">
+        📸 Instagram: @confeitariaflordcacau
+    </a>
 </div>
 """, unsafe_allow_html=True)
