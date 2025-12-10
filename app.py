@@ -206,14 +206,3 @@ footer_html = ""
 ""
 
 st.markdown(footer_html, unsafe_allow_html=True)
-
-
-
-
-
-
-
-
-
-
-
