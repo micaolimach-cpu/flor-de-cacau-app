@@ -2,6 +2,7 @@ import streamlit as st
 from datetime import date, time
 from urllib.parse import quote
 
+# --- Configuração da página ---
 st.set_page_config(page_title="Flor de Cacau", page_icon="🍫", layout="centered")
 
 # --- Estilo personalizado ---
@@ -20,17 +21,41 @@ button, .stButton>button {
     border-radius: 8px;
     padding: 0.5rem 1rem;
 }
-.stTextInput>div>input {
+.stTextInput>div>input, .stTextArea>div>textarea {
     background-color: #FFF8F0;
     border: 1px solid #D2B48C;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# --- Cabeçalho ---
-# st.image("logo.png", width=200)
-st.title("Flor de Cacau")
-st.markdown("Monte seu kit de brigadeiros personalizados 🍬")
+# --- Cabeçalho / Apresentação ---
+#st.image("logo.png", width=200)
+st.title("Flor de Cacau 🍫")
+st.markdown("Kits de Brigadeiro para Eventos, Festas & Confraternizações")
+
+st.markdown("---")
+
+# --- Área de escolha de kits ---
+st.subheader("🎁 Nossos Kits Especiais")
+
+kits = [
+    {"name": "Kit Pequeno", "desc": "Perfeito para degustação", "qty": 6, "price": 18.00},
+    {"name": "Kit Médio", "desc": "Ideal para presentear", "qty": 12, "price": 33.00},
+    {"name": "Kit Grande", "desc": "Ótimo para os amantes de brigadeiro", "qty": 24, "price": 60.00},
+    {"name": "Kit Premium", "desc": "Para aquele evento de última hora", "qty": 50, "price": 120.00},
+    {"name": "Kit Mega", "desc": "Para festas e eventos maiores (100-1000 unidades)", "qty": 100, "price": 210.00},
+]
+
+kit_escolhido = st.selectbox(
+    "Selecione o kit desejado:",
+    [kit["name"] for kit in kits]
+)
+
+kit_info = next(k for k in kits if k["name"] == kit_escolhido)
+st.write(f"📦 {kit_info['desc']} — {kit_info['qty']} unidades")
+st.write(f"💰 R$ {kit_info['price']:.2f} (R${kit_info['price']/kit_info['qty']:.2f}/un)")
+
+st.markdown("---")
 
 # --- Sabores disponíveis ---
 flavors = [
@@ -45,7 +70,7 @@ flavors = [
     {"id": 9, "name": "Churros", "icon": "🍩", "price": 3.50},
 ]
 
-st.subheader("Escolha os Sabores")
+st.subheader("🍬 Escolha os Sabores")
 selected_flavors = {}
 total_price = 0.0
 
@@ -54,13 +79,17 @@ for flavor in flavors:
         qty = st.number_input(
             f"Quantidade de {flavor['name']}",
             min_value=0,
-            max_value=100,
+            max_value=kit_info["qty"],
             step=1,
             key=f"qty_{flavor['id']}"
         )
         if qty > 0:
             selected_flavors[flavor["name"]] = qty
-            total_price += qty * flavor["price"]# --- Carrinho ---
+            total_price += qty * flavor["price"]
+
+st.markdown("---")
+
+# --- Carrinho ---
 st.subheader("🛒 Seu Pedido")
 
 if not selected_flavors:
@@ -84,6 +113,7 @@ else:
     if st.button("📲 Finalizar pedido no WhatsApp"):
         phone = "5551992860852"
         message = "*🍫 NOVO PEDIDO - FLOR DE CACAU*\\n\\n"
+        message += f"Kit escolhido: {kit_info['name']} ({kit_info['qty']} unidades)\\n\\n"
         for sabor, qtd in selected_flavors.items():
             preco_unit = next(f["price"] for f in flavors if f["name"] == sabor)
             message += f"{qtd}x {sabor} (R$ {preco_unit:.2f}/un)\\n"
@@ -99,7 +129,11 @@ else:
             message += f"\\n📝 Observações: {obs}"
 
         url = f"https://wa.me/{phone}?text={quote(message)}"
-        st.markdown(f"[👉 Abrir WhatsApp]({url})", unsafe_allow_html=True)# --- Rodapé ---
+        st.markdown(f"[👉 Abrir WhatsApp]({url})", unsafe_allow_html=True)
+
+st.markdown("---")
+
+# --- Rodapé ---
 st.markdown("""
 <hr style="margin-top: 2rem; margin-bottom: 1rem;">
 
@@ -111,6 +145,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
