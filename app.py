@@ -6,7 +6,7 @@ from urllib.parse import quote
 st.set_page_config(page_title="Flor de Cacau", page_icon="🍫", layout="wide")
 
 # --- Logo ---
-st.image("logo.png", width=200)
+# st.image("logo.png", width=200)
 st.title("🍫 Flor de Cacau")
 st.subheader("Kits de Brigadeiro para Eventos, Festas & Confraternizações")
 
@@ -30,7 +30,7 @@ flavors = [
     {"id": 10, "name": "Café", "icon": "☕"},
     {"id": 11, "name": "Paçoca", "icon": "🥜"},
     {"id": 12, "name": "Churros", "icon": "🍩"},
-
+]
 
 # --- Estado ---
 if "cart" not in st.session_state:
@@ -160,15 +160,17 @@ else:
         st.markdown(f"[👉 Abrir WhatsApp]({url})", unsafe_allow_html=True)
 
 # --- Rodapé ---
-st.markdown(""
+st.markdown("""
 <hr style="margin-top: 2rem; margin-bottom: 1rem;">
 
 <div style="text-align: center; font-size: 0.9rem; color: #4A3B32;">
-    © 2025 Flor de Cacau Confeitaria — Ingredientes frescos, produtores locais e chocolate nobre.<br>
+    &copy; 2025 Flor de Cacau Confeitaria - Ingredientes frescos, produtores locais e chocolate nobre.<br>
     Feito com ❤️ em Porto Alegre - RS<br>
     <a href="https://www.instagram.com/confeitariaflordcacau/" target="_blank" style="color: #E91E63; text-decoration: none;">
         📸 Siga-nos no Instagram: @confeitariaflordcacau
     </a>
 </div>
-"", unsafe_allow_html=True)
+""", unsafe_allow_html=True)
+
+
 
