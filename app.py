@@ -5,7 +5,7 @@ from urllib.parse import quote
 # --- Configuração da página ---
 st.set_page_config(page_title="Flor de Cacau", page_icon="🍫", layout="centered")
 
-# --- Estilo visual ---
+# --- Estilo visual (Mantido para a correção do progresso) ---
 st.markdown("""
 <style>
 body {
@@ -155,7 +155,7 @@ if "kit_escolhido" in st.session_state:
         </div>
     """, unsafe_allow_html=True)
     
-    # BARRA DE PROGRESSO REAL (Chamada como um componente Streamlit separado)
+    # BARRA DE PROGRESSO REAL (FIX DEFINITIVO para DeltaGenerator)
     st.progress(min(soma / total_unidades, 1.0))
     
     # LAYOUT EM DUAS COLUNAS PARA SABORES
@@ -247,34 +247,38 @@ if "pedido" in st.session_state:
         phone = "5551992860852"
         pedido = st.session_state["pedido"]
         
-        # INÍCIO DA MENSAGEM DO WHATSAPP ORGANIZADA (FIX APLICADO AQUI: usando \\n\\n)
+        # INÍCIO DA MENSAGEM DO WHATSAPP (REVISÃO FINAL - FORMATO MAIS LIMPO E ROBUSTO)
         
-        message = "*🍫 NOVO PEDIDO - FLOR DE CACAU*\\n\\n" # Duas quebras de linha
-        message += "*--------------------------*\\n\\n" # Duas quebras de linha
+        # Título principal e linha divisória (com \n\n para espaço grande)
+        message = "*🍫 NOVO PEDIDO - FLOR DE CACAU*\\n"
+        message += "--------------------------\\n\\n"
         
         # 1. Resumo do Kit
-        message += "➡️ *RESUMO DO PEDIDO*\\n\\n" # Duas quebras de linha
-        message += f"*- Kit:* {pedido['kit']['name']} ({pedido['kit']['qty']} unidades)\\n\\n" # Duas quebras de linha
-        message += f"*- VALOR TOTAL:* R$ {pedido['kit']['price']:.2f}\\n\\n" # Duas quebras de linha
+        message += "➡️ *RESUMO DO PEDIDO*\\n"
+        # Usamos o marcador • e \n simples entre os itens de um mesmo bloco
+        message += f"• Kit: {pedido['kit']['name']} ({pedido['kit']['qty']} unidades)\\n"
+        message += f"• VALOR TOTAL: R$ {pedido['kit']['price']:.2f}\\n\\n" # \n\n para separação de bloco
 
         # 2. Seção de Sabores
-        message += "➡️ *SABORES E QUANTIDADES*\\n\\n" # Duas quebras de linha
+        message += "➡️ *SABORES E QUANTIDADES*\\n"
         for sabor, qtd in pedido["sabores"].items():
-            message += f"*{qtd}x* {sabor}\\n\\n" # Duas quebras de linha após cada item
+            message += f"• {qtd}x {sabor}\\n" 
+        message += "\\n" # \n\n para separação de bloco
         
         # 3. Detalhes do Cliente e Entrega
-        message += "➡️ *DADOS DE ENTREGA/CLIENTE*\\n\\n" # Duas quebras de linha
+        message += "➡️ *DADOS DE ENTREGA/CLIENTE*\\n"
 
+        # Usamos \n simples entre os itens de um mesmo bloco
         if nome_cliente:
-            message += f"*- Cliente:* {nome_cliente}\\n\\n"
+            message += f"• Cliente: {nome_cliente}\\n"
         if data_entrega:
-            message += f"*- Data:* {data_entrega.strftime('%d/%m/%Y')}\\n\\n"
+            message += f"• Data: {data_entrega.strftime('%d/%m/%Y')}\\n"
         if horario_entrega:
-            message += f"*- Horário:* {horario_entrega.strftime('%H:%M')}\\n\\n"
+            message += f"• Horário: {horario_entrega.strftime('%H:%M')}\\n"
         if entrega_opcao:
-            message += f"*- Modalidade:* {entrega_opcao}\\n\\n"
+            message += f"• Modalidade: {entrega_opcao}\\n"
         if obs:
-            message += f"*- Observações:* {obs}\\n\\n"
+            message += f"• Observações: {obs}\\n"
         
         # FIM DA MENSAGEM DO WHATSAPP ORGANIZADA
         
@@ -317,3 +321,4 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+        
