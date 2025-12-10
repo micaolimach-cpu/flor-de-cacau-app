@@ -173,9 +173,9 @@ if "pedido" in st.session_state:
 
 st.markdown("---")
 
-# --- Pagamentos aceitos ---
-st.markdown(""
-<div style=
+# --- Formas de pagamento ---
+pagamentos_html = """
+<div style="
     background-color:#FFF0E6;
     border:1px solid #E0C4A8;
     border-radius:12px;
@@ -183,9 +183,13 @@ st.markdown(""
     text-align:center;
     margin-bottom:1rem;
 ">
-    <h4 style="color:#6B3E26;">💳 Formas de Pagamento</h4>
-    <p>✔️ Aceitamos cartões: Visa, MasterCard, Elo, Hipercard</p>
-    <p>✔️ Pagamento via <b>PIX</b></p>
+    <h4 style="color:#6B3E26; margin:0 0 0.5rem 0;">💳 Formas de pagamento</h4>
+    <p style="margin:0.25rem 0;">✔️ Aceitamos cartões: Visa, MasterCard, Elo, Hipercard</p>
+    <p style="margin:0.25rem 0;">✔️ Pagamento via <b>PIX</b></p>
+</div>
+"""
+st.markdown(pagamentos_html, unsafe_allow_html=True)
+
 # --- Rodapé ---
 footer_html = ""
 <div style=
@@ -206,3 +210,4 @@ footer_html = ""
 ""
 
 st.markdown(footer_html, unsafe_allow_html=True)
+
