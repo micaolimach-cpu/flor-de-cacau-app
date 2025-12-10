@@ -28,7 +28,7 @@ button, .stButton>button {
 """, unsafe_allow_html=True)
 
 # --- Cabeçalho ---
-st.image("logo.png", width=160)
+# st.image("logo.png", width=200)
 st.title("Flor de Cacau")
 st.markdown("Monte seu kit de brigadeiros personalizados 🍬")
 
@@ -111,6 +111,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
