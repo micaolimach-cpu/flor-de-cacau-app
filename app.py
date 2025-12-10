@@ -187,8 +187,8 @@ st.markdown("""
     <p>✔️ Aceitamos cartões: Visa, MasterCard, Elo, Hipercard</p>
     <p>✔️ Pagamento via <b>PIX</b></p>
 # --- Rodapé ---
-footer_html = """
-<div style="
+footer_html = ""
+<div style=
     background-color:#6B3E26;
     color:white;
     text-align:center;
@@ -203,9 +203,10 @@ footer_html = """
         📷 Instagram: @flordecacau
     </a>
 </div>
-"""
+""
 
 st.markdown(footer_html, unsafe_allow_html=True)
+
 
 
 
