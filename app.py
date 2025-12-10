@@ -49,7 +49,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("---")
 
-# --- Nossos Kits Especiais ---
+# --- Nossos Kits Especiais (LAYOUT MELHORADO) ---
 st.subheader("🎁 Nossos Kits Especiais")
 
 kits = [
@@ -59,9 +59,10 @@ kits = [
     {"name": "Kit Mega", "desc": "Para festas e eventos maiores (100-1000 unidades)", "qty": 100, "price": 210.00},
 ]
 
-cols = st.columns(3)
+# Alterado de st.columns(3) para st.columns(2) para melhor simetria
+cols = st.columns(2) 
 for i, kit in enumerate(kits):
-    with cols[i % 3]:
+    with cols[i % 2]: # Alterado de i % 3 para i % 2
         st.markdown(f"""
         <div style="
             background-color:#FFF0E6;
@@ -83,7 +84,7 @@ for i, kit in enumerate(kits):
 
 st.markdown("---")
 
-# --- Seleção de sabores (MODIFICADA) ---
+# --- Seleção de sabores (CUSTOMIZADA) ---
 if "kit_escolhido" in st.session_state:
     kit = st.session_state["kit_escolhido"]
 
@@ -116,7 +117,7 @@ if "kit_escolhido" in st.session_state:
     # CÁLCULO DE SOMA INICIAL para exibir o progresso
     soma = sum(st.session_state.get(f"flavor_{flavor['name']}", 0) for flavor in flavors)
 
-    # RECRIAÇÃO DO BLOCO DE INSTRUÇÕES E PROGRESSO (como na imagem)
+    # BLOCO DE PROGRESSO COM ESTILO DE CAIXA
     st.markdown(f"""
         <div style="
             background-color:#FFF5E6; 
@@ -135,7 +136,7 @@ if "kit_escolhido" in st.session_state:
         </div>
     """, unsafe_allow_html=True)
     
-    # LAYOUT EM DUAS COLUNAS (como na imagem)
+    # LAYOUT EM DUAS COLUNAS PARA SABORES
     selected_flavors = {}
     cols = st.columns(2) 
     
@@ -209,7 +210,7 @@ if "kit_escolhido" in st.session_state:
 
 st.markdown("---")
 
-# --- Dados do cliente (MODIFICADA) ---
+# --- Dados do cliente (CUSTOMIZADA) ---
 if "pedido" in st.session_state:
     st.subheader("📄 Dados do Cliente")
 
@@ -279,7 +280,7 @@ st.markdown("""
     <p>✔️ Aceitamos cartões: Visa, MasterCard, Elo, Hipercard</p>
     <p>✔️ Pagamento via <b>PIX</b></p>
 </div>
-""", unsafe_allow_html=True) # <-- CORREÇÃO APLICADA AQUI
+""", unsafe_allow_html=True)
 
 # --- Rodapé ---
 st.markdown("""
@@ -299,4 +300,3 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
-            
