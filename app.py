@@ -32,11 +32,9 @@ h1, h2, h3 {
     border: 1px solid #D2B48C;
     border-radius: 6px;
 }
-/* Estilo para Number Input: tenta centralizar o texto dentro do campo */
 div[data-testid="stNumberInput"] div input {
     text-align: center;
 }
-/* Estilo para garantir que o botão de confirmação tenha o estilo rosa */
 div.stButton button[data-testid*="stButton-primary"] {
     background-color: #F8BBD0; 
     color: #6B3E26; 
@@ -50,13 +48,11 @@ div.stButton button[data-testid*="stButton-primary"] {
 div.stButton button[data-testid*="stButton-primary"]:hover {
     background-color: #F48FB1; 
 }
-
-/* Tenta forçar a barra de progresso a se renderizar corretamente e ajusta a margem */
+/* Ajuste para colar a barra de progresso na caixa de texto */
 div[data-testid="stProgress"] {
     margin-top: -10px; 
     margin-bottom: 1rem;
 }
-
 </style>
 """, unsafe_allow_html=True)
 
@@ -70,7 +66,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("---")
 
-# --- Nossos Kits Especiais (LAYOUT OTIMIZADO) ---
+# --- Nossos Kits Especiais ---
 st.subheader("🎁 Nossos Kits Especiais")
 
 kits = [
@@ -80,7 +76,6 @@ kits = [
     {"name": "Kit Mega", "desc": "Para festas e eventos maiores (100-1000 unidades)", "qty": 100, "price": 210.00},
 ]
 
-# Layout em 2 colunas para melhor simetria
 cols = st.columns(2) 
 for i, kit in enumerate(kits):
     with cols[i % 2]: 
@@ -105,11 +100,11 @@ for i, kit in enumerate(kits):
 
 st.markdown("---")
 
-# --- Seleção de sabores (CUSTOMIZADA E CORRIGIDA) ---
+# --- Seleção de sabores ---
 if "kit_escolhido" in st.session_state:
     kit = st.session_state["kit_escolhido"]
 
-    # Kit Mega: cliente define quantidade entre 100 e 1000
+    # Lógica Kit Mega
     if kit["name"] == "Kit Mega":
         qtd_mega = st.number_input("Quantidade de brigadeiros", min_value=100, max_value=1000, step=10)
         kit["qty"] = qtd_mega
@@ -119,7 +114,6 @@ if "kit_escolhido" in st.session_state:
 
     total_unidades = kit["qty"]
 
-    
     st.markdown(f"## 🍬 Monte seu {kit['name']}")
     st.write(f"Selecione os sabores até completar **{total_unidades} unidades**")
 
@@ -135,10 +129,10 @@ if "kit_escolhido" in st.session_state:
         {"name": "Churros", "icon": "🍩"},
     ]
 
-    # CÁLCULO DE SOMA para exibir o progresso
+    # Cálculo da soma
     soma = sum(st.session_state.get(f"flavor_{flavor['name']}", 0) for flavor in flavors)
 
-    # BLOCO DE PROGRESSO COM ESTILO DE CAIXA
+    # 1. Bloco de Texto (Instruções + Contagem)
     st.markdown(f"""
         <div style="
             background-color:#FFF5E6; 
@@ -155,16 +149,15 @@ if "kit_escolhido" in st.session_state:
         </div>
     """, unsafe_allow_html=True)
     
-    # BARRA DE PROGRESSO REAL
+    # 2. Barra de Progresso (FORA do markdown para evitar erro DeltaGenerator)
     st.progress(min(soma / total_unidades, 1.0))
     
-    # LAYOUT EM DUAS COLUNAS PARA SABORES
+    # Inputs dos sabores
     selected_flavors = {}
     cols = st.columns(2) 
     
     for i, flavor in enumerate(flavors):
         with cols[i % 2]: 
-            # Estilo de caixa para o sabor
             st.markdown(f"""
             <div style="
                 background-color:#FFFFFF; 
@@ -177,19 +170,17 @@ if "kit_escolhido" in st.session_state:
                 <p style="color:#6B3E26; margin:0.2rem 0; font-weight:600;">{flavor['icon']} {flavor['name']}</p>
             """, unsafe_allow_html=True)
 
-            # O st.number_input é usado para a seleção de quantidade
             qtd = st.number_input(
                 "Quantidade", 
                 min_value=0,
                 max_value=total_unidades,
                 step=1,
                 key=f"flavor_{flavor['name']}",
-                label_visibility="collapsed" # Esconde o label
+                label_visibility="collapsed"
             )
-            
             st.markdown("</div>", unsafe_allow_html=True)
             
-    # RE-CÁLCULO DE SOMA para a lógica de confirmação
+    # Recalcula para garantir atualização
     selected_flavors = {}
     soma = 0
     for flavor in flavors:
@@ -198,9 +189,7 @@ if "kit_escolhido" in st.session_state:
             selected_flavors[flavor["name"]] = qtd
             soma += qtd
 
-    # Botão de confirmação
     if soma == total_unidades:
-        
         if st.button("Confirmar Adicionar ao Pedido", type="primary"):
             st.session_state["pedido"] = {
                 "kit": kit,
@@ -212,20 +201,17 @@ if "kit_escolhido" in st.session_state:
 
 st.markdown("---")
 
-# --- Dados do cliente (CUSTOMIZADA) ---
+# --- Dados do cliente ---
 if "pedido" in st.session_state:
     st.subheader("📄 Dados do Cliente")
 
-    # Layout em duas colunas para Nome/Data e Horário
     col1, col2 = st.columns(2)
-    
     with col1:
         nome_cliente = st.text_input("👤 Nome do cliente")
         data_entrega = st.date_input("📅 Data de entrega", min_value=date.today())
     
     with col2:
-        # Coluna 2 é usada apenas para o Horário de entrega
-        st.markdown("<p style='visibility: hidden;'>Nome placeholder</p>", unsafe_allow_html=True)
+        st.markdown("<p style='visibility: hidden;'>Space</p>", unsafe_allow_html=True)
         horario_entrega = st.time_input("⏰ Horário de entrega", value=time(14, 0))
         
     st.markdown("---")
@@ -234,68 +220,48 @@ if "pedido" in st.session_state:
     entrega_opcao = st.radio(
         "Forma de entrega", 
         ["Entrega no endereço", "Retirada no local"], 
-        key="entrega_radio",
         horizontal=True, 
         label_visibility="collapsed" 
     )
 
     st.markdown("---")
-    
     obs = st.text_area("📝 Observações (opcional)", placeholder="Ex: sem coco, embalar separadamente...")
 
     if st.button("📲 Finalizar pedido no WhatsApp"):
         phone = "5551992860852"
         pedido = st.session_state["pedido"]
         
-        # --- CORREÇÃO APLICADA AQUI: Usando \n em vez de \\n ---
+        # --- MONTAGEM DA MENSAGEM (Método Seguro) ---
+        # Usamos uma lista para evitar erros com \n
+        lines = []
+        lines.append("*🍫 NOVO PEDIDO - FLOR DE CACAU*")
+        lines.append("--------------------------")
+        lines.append("") # Linha em branco
         
-        message = "*🍫 NOVO PEDIDO - FLOR DE CACAU*\n"
-        message += "--------------------------\n\n"
-        
-        message += "➡️ *RESUMO DO PEDIDO*\n"
-        message += f"• Kit: {pedido['kit']['name']} ({pedido['kit']['qty']} unidades)\n"
-        message += f"• VALOR TOTAL: R$ {pedido['kit']['price']:.2f}\n\n"
+        lines.append("➡️ *RESUMO DO PEDIDO*")
+        lines.append(f"• Kit: {pedido['kit']['name']} ({pedido['kit']['qty']} unidades)")
+        lines.append(f"• VALOR TOTAL: R$ {pedido['kit']['price']:.2f}")
+        lines.append("") # Linha em branco
 
-        message += "➡️ *SABORES E QUANTIDADES*\n"
+        lines.append("➡️ *SABORES E QUANTIDADES*")
         for sabor, qtd in pedido["sabores"].items():
-            message += f"• {qtd}x {sabor}\n" 
-        message += "\n"
+            lines.append(f"• {qtd}x {sabor}")
+        lines.append("") # Linha em branco
         
-        message += "➡️ *DADOS DE ENTREGA/CLIENTE*\n"
+        lines.append("➡️ *DADOS DE ENTREGA/CLIENTE*")
+        if nome_cliente: lines.append(f"• Cliente: {nome_cliente}")
+        if data_entrega: lines.append(f"• Data: {data_entrega.strftime('%d/%m/%Y')}")
+        if horario_entrega: lines.append(f"• Horário: {horario_entrega.strftime('%H:%M')}")
+        if entrega_opcao: lines.append(f"• Modalidade: {entrega_opcao}")
+        if obs: lines.append(f"• Observações: {obs}")
 
-        if nome_cliente:
-            message += f"• Cliente: {nome_cliente}\n"
-        if data_entrega:
-            message += f"• Data: {data_entrega.strftime('%d/%m/%Y')}\n"
-        if horario_entrega:
-            message += f"• Horário: {horario_entrega.strftime('%H:%M')}\n"
-        if entrega_opcao:
-            message += f"• Modalidade: {entrega_opcao}\n"
-        if obs:
-            message += f"• Observações: {obs}\n"
-        
-        # --- FIM DA MENSAGEM CORRIGIDA ---
+        # Junta tudo com uma quebra de linha real
+        message = "\n".join(lines)
         
         url = f"https://wa.me/{phone}?text={quote(message)}"
         st.markdown(f"[👉 Abrir WhatsApp]({url})", unsafe_allow_html=True)
 
 st.markdown("---")
-
-# --- Pagamentos aceitos ---
-st.markdown("""
-<div style="
-    background-color:#FFF0E6;
-    border:1px solid #E0C4A8;
-    border-radius:12px;
-    padding:1rem;
-    text-align:center;
-    margin-bottom:1rem;
-">
-    <h4 style="color:#6B3E26;">💳 Formas de Pagamento</h4>
-    <p>✔️ Aceitamos cartões: Visa, MasterCard, Elo, Hipercard</p>
-    <p>✔️ Pagamento via <b>PIX</b></p>
-</div>
-""", unsafe_allow_html=True)
 
 # --- Rodapé ---
 st.markdown("""
@@ -307,11 +273,7 @@ st.markdown("""
     border-radius:8px;
     margin-top:2rem;
 ">
-    &copy; 2025 Flor de Cacau Confeitaria - Ingredientes frescos, produtores locais e chocolate nobre.<br>
-    Feito com ❤️ em Porto Alegre - RS<br>
-    📍 Endereço: Avenida Antonio de Carvalho, 2600 - Ap 170<br>
-    <a href="https://www.instagram.com/confeitariaflordcacau/" target="_blank" style="color:#FFD700; text-decoration:none;">
-        📸 Instagram: @confeitariaflordcacau
-    </a>
+    &copy; 2025 Flor de Cacau Confeitaria<br>
+    📍 Porto Alegre - RS
 </div>
 """, unsafe_allow_html=True)
