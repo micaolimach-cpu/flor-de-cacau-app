@@ -175,7 +175,7 @@ st.markdown("---")
 
 # --- Pagamentos aceitos ---
 st.markdown("""
-<div style="
+<div style=
     background-color:#FFF0E6;
     border:1px solid #E0C4A8;
     border-radius:12px;
@@ -188,7 +188,7 @@ st.markdown("""
     <p>✔️ Pagamento via <b>PIX</b></p>
   # --- Rodapé ---
 st.markdown("""
-<div style="
+<div style=
     background-color:#6B3E26;
     color:white;
     text-align:center;
@@ -204,6 +204,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
