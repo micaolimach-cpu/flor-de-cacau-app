@@ -131,14 +131,15 @@ if "kit_escolhido" in st.session_state:
     # CÁLCULO DE SOMA para exibir o progresso
     soma = sum(st.session_state.get(f"flavor_{flavor['name']}", 0) for flavor in flavors)
 
-    # BLOCO DE PROGRESSO COM ESTILO DE CAIXA (SÓ TEXTO)
+    # BLOCO DE PROGRESSO COM ESTILO DE CAIXA (CORREÇÃO APLICADA AQUI)
+    # A string HTML agora usa .format() para inserir os valores (soma/total_unidades)
     st.markdown(f"""
         <div style="
             background-color:#FFF5E6; 
             border:1px solid #FFD799; 
             border-radius:8px; 
-            padding:10px; 
-            margin-bottom:0.5rem; /* Margem ajustada para inserir o progress bar abaixo */
+            padding:10px 10px 5px 10px; /* Padding ajustado */
+            margin-bottom:0.5rem;
         ">
             <p style='margin-bottom:0.5rem; font-weight:500;'>
                 Instruções: Selecione a quantidade de cada sabor até completar o total de unidades do kit
@@ -149,8 +150,7 @@ if "kit_escolhido" in st.session_state:
         </div>
     """, unsafe_allow_html=True)
     
-    # BARRA DE PROGRESSO REAL (FORA DO MARKDOWN HTML para funcionar)
-    # CORREÇÃO APLICADA: Movemos st.progress para fora do bloco markdown
+    # BARRA DE PROGRESSO REAL (Chamada como um componente Streamlit separado)
     st.progress(min(soma / total_unidades, 1.0))
     
     # LAYOUT EM DUAS COLUNAS PARA SABORES
@@ -253,7 +253,7 @@ if "pedido" in st.session_state:
         # 2. Seção de Sabores (Tópicos)
         message += "*--- SABORES SELECIONADOS ---*\\n"
         for sabor, qtd in pedido["sabores"].items():
-            message += f"*{qtd}x* {sabor}\\n" # Quantidade em negrito
+            message += f"*{qtd}x* {sabor}\\n" 
         message += "\\n"
         
         # 3. Detalhes do Cliente e Entrega (Tópicos)
@@ -311,4 +311,3 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
-                               
