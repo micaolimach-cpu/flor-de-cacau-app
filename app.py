@@ -186,7 +186,7 @@ st.markdown("""
     <h4 style="color:#6B3E26;">💳 Formas de Pagamento</h4>
     <p>✔️ Aceitamos cartões: Visa, MasterCard, Elo, Hipercard</p>
     <p>✔️ Pagamento via <b>PIX</b></p>
-  # --- Rodapé ---
+ # --- Rodapé ---
 st.markdown("""
 <div style=
     background-color:#6B3E26;
