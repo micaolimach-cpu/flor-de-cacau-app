@@ -213,7 +213,7 @@ st.markdown("---")
 if "pedido" in st.session_state:
     st.subheader("📄 Dados do Cliente")
 
-    # Layout em duas colunas para Data e Horário
+    # Layout em duas colunas para Nome/Data e Horário
     col1, col2 = st.columns(2)
     
     with col1:
@@ -222,7 +222,7 @@ if "pedido" in st.session_state:
     
     with col2:
         # Coluna 2 é usada apenas para o Horário de entrega
-        st.markdown("<p style='visibility: hidden;'>Nome placeholder</p>", unsafe_allow_html=True) # Espaço
+        st.markdown("<p style='visibility: hidden;'>Nome placeholder</p>", unsafe_allow_html=True)
         horario_entrega = st.time_input("⏰ Horário de entrega", value=time(14, 0))
         
     st.markdown("---")
@@ -278,7 +278,10 @@ st.markdown("""
     <h4 style="color:#6B3E26;">💳 Formas de Pagamento</h4>
     <p>✔️ Aceitamos cartões: Visa, MasterCard, Elo, Hipercard</p>
     <p>✔️ Pagamento via <b>PIX</b></p>
-    # --- Rodapé ---
+</div>
+""", unsafe_allow_html=True) # <-- CORREÇÃO APLICADA AQUI
+
+# --- Rodapé ---
 st.markdown("""
 <div style="
     background-color:#6B3E26;
@@ -296,3 +299,4 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+            
