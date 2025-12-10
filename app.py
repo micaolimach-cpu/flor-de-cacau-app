@@ -51,9 +51,9 @@ div.stButton button[data-testid*="stButton-primary"]:hover {
     background-color: #F48FB1; 
 }
 
-/* Tenta forçar a barra de progresso a se renderizar corretamente */
+/* Tenta forçar a barra de progresso a se renderizar corretamente e ajusta a margem */
 div[data-testid="stProgress"] {
-    margin-top: -10px; /* Puxa para cima para grudar no bloco de texto */
+    margin-top: -10px; 
     margin-bottom: 1rem;
 }
 
@@ -156,7 +156,6 @@ if "kit_escolhido" in st.session_state:
     """, unsafe_allow_html=True)
     
     # BARRA DE PROGRESSO REAL (Chamada como um componente Streamlit separado)
-    # O CSS no topo garante que ela "grude" na caixa de texto
     st.progress(min(soma / total_unidades, 1.0))
     
     # LAYOUT EM DUAS COLUNAS PARA SABORES
@@ -248,35 +247,34 @@ if "pedido" in st.session_state:
         phone = "5551992860852"
         pedido = st.session_state["pedido"]
         
-        # INÍCIO DA MENSAGEM DO WHATSAPP ORGANIZADA EM TÓPICOS (ESTILO MELHORADO)
+        # INÍCIO DA MENSAGEM DO WHATSAPP ORGANIZADA (FIX APLICADO AQUI: usando \\n\\n)
         
-        message = "*🍫 NOVO PEDIDO - FLOR DE CACAU*\\n"
-        message += "*--------------------------*\\n\\n"
+        message = "*🍫 NOVO PEDIDO - FLOR DE CACAU*\\n\\n" # Duas quebras de linha
+        message += "*--------------------------*\\n\\n" # Duas quebras de linha
         
         # 1. Resumo do Kit
-        message += "➡️ *RESUMO DO PEDIDO*\\n"
-        message += f"*- Kit:* {pedido['kit']['name']} ({pedido['kit']['qty']} unidades)\\n"
-        message += f"*- VALOR TOTAL:* R$ {pedido['kit']['price']:.2f}\\n\\n"
+        message += "➡️ *RESUMO DO PEDIDO*\\n\\n" # Duas quebras de linha
+        message += f"*- Kit:* {pedido['kit']['name']} ({pedido['kit']['qty']} unidades)\\n\\n" # Duas quebras de linha
+        message += f"*- VALOR TOTAL:* R$ {pedido['kit']['price']:.2f}\\n\\n" # Duas quebras de linha
 
         # 2. Seção de Sabores
-        message += "➡️ *SABORES E QUANTIDADES*\\n"
+        message += "➡️ *SABORES E QUANTIDADES*\\n\\n" # Duas quebras de linha
         for sabor, qtd in pedido["sabores"].items():
-            message += f"*{qtd}x* {sabor}\\n" 
-        message += "\\n"
+            message += f"*{qtd}x* {sabor}\\n\\n" # Duas quebras de linha após cada item
         
         # 3. Detalhes do Cliente e Entrega
-        message += "➡️ *DADOS DE ENTREGA/CLIENTE*\\n"
+        message += "➡️ *DADOS DE ENTREGA/CLIENTE*\\n\\n" # Duas quebras de linha
 
         if nome_cliente:
-            message += f"*- Cliente:* {nome_cliente}\\n"
+            message += f"*- Cliente:* {nome_cliente}\\n\\n"
         if data_entrega:
-            message += f"*- Data:* {data_entrega.strftime('%d/%m/%Y')}\\n"
+            message += f"*- Data:* {data_entrega.strftime('%d/%m/%Y')}\\n\\n"
         if horario_entrega:
-            message += f"*- Horário:* {horario_entrega.strftime('%H:%M')}\\n"
+            message += f"*- Horário:* {horario_entrega.strftime('%H:%M')}\\n\\n"
         if entrega_opcao:
-            message += f"*- Modalidade:* {entrega_opcao}\\n"
+            message += f"*- Modalidade:* {entrega_opcao}\\n\\n"
         if obs:
-            message += f"*- Observações:* {obs}\\n"
+            message += f"*- Observações:* {obs}\\n\\n"
         
         # FIM DA MENSAGEM DO WHATSAPP ORGANIZADA
         
