@@ -3,35 +3,67 @@ from datetime import date, time
 from urllib.parse import quote
 
 # --- Configuração da página ---
-st.set_page_config(page_title="Flor de Cacau", page_icon="🍫", layout="centered")
+st.set_page_config(page_title="Flor de Cacau", page_icon="🍫", layout="wide")
 
-# --- Estilo personalizado ---
+# --- Estilo premium ---
 st.markdown("""
 <style>
 body {
-    background-color: #FDECEF;
-    font-family: 'Segoe UI', sans-serif;
+    background-color: #fff8f0;
+    font-family: 'Poppins', sans-serif;
 }
+
+/* Títulos */
 h1, h2, h3 {
-    color: #4A3B32;
+    color: #4A2C2A;
+    font-weight: 600;
 }
-button, .stButton>button {
-    background-color: #A0522D;
+
+/* Cards */
+div[data-testid="stVerticalBlock"] {
+    background-color: #ffffff;
+    border: 1px solid #e0c4a8;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Botões */
+.stButton>button {
+    background-color: #4CAF50;
     color: white;
     border-radius: 8px;
-    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+    transition: 0.3s;
 }
+.stButton>button:hover {
+    background-color: #45a049;
+}
+
+/* Inputs */
 .stTextInput>div>input, .stTextArea>div>textarea {
     background-color: #FFF8F0;
     border: 1px solid #D2B48C;
+    border-radius: 6px;
+}
+
+/* Rodapé */
+footer {
+    background-color: #4A2C2A;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 8px;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# --- Cabeçalho / Apresentação ---
-#st.image("logo.png", width=200)
+# --- Cabeçalho ---
+st.image("logo.png", width=160)
 st.title("Flor de Cacau 🍫")
-st.markdown("Kits de Brigadeiro para Eventos, Festas & Confraternizações")
+st.markdown("Monte seu kit de brigadeiros personalizados com estilo premium ✨")
 
 st.markdown("---")
 
@@ -46,14 +78,15 @@ kits = [
     {"name": "Kit Mega", "desc": "Para festas e eventos maiores (100-1000 unidades)", "qty": 100, "price": 210.00},
 ]
 
-kit_escolhido = st.selectbox(
-    "Selecione o kit desejado:",
-    [kit["name"] for kit in kits]
-)
-
-kit_info = next(k for k in kits if k["name"] == kit_escolhido)
-st.write(f"📦 {kit_info['desc']} — {kit_info['qty']} unidades")
-st.write(f"💰 R$ {kit_info['price']:.2f} (R${kit_info['price']/kit_info['qty']:.2f}/un)")
+cols = st.columns(3)
+for i, kit in enumerate(kits):
+    with cols[i % 3]:
+        st.markdown(f"### {kit['name']}")
+        st.write(kit["desc"])
+        st.write(f"📦 {kit['qty']} unidades")
+        st.write(f"💰 R$ {kit['price']:.2f} (R${kit['price']/kit['qty']:.2f}/un)")
+        if st.button(f"Selecionar {kit['name']}", key=f"btn_{kit['name']}"):
+            st.session_state["kit_escolhido"] = kit
 
 st.markdown("---")
 
@@ -74,12 +107,13 @@ st.subheader("🍬 Escolha os Sabores")
 selected_flavors = {}
 total_price = 0.0
 
-for flavor in flavors:
-    with st.expander(f"{flavor['icon']} {flavor['name']} — R$ {flavor['price']:.2f}/un"):
+cols = st.columns(3)
+for i, flavor in enumerate(flavors):
+    with cols[i % 3]:
         qty = st.number_input(
-            f"Quantidade de {flavor['name']}",
+            f"{flavor['icon']} {flavor['name']} (R$ {flavor['price']:.2f}/un)",
             min_value=0,
-            max_value=kit_info["qty"],
+            max_value=100,
             step=1,
             key=f"qty_{flavor['id']}"
         )
@@ -113,7 +147,9 @@ else:
     if st.button("📲 Finalizar pedido no WhatsApp"):
         phone = "5551992860852"
         message = "*🍫 NOVO PEDIDO - FLOR DE CACAU*\\n\\n"
-        message += f"Kit escolhido: {kit_info['name']} ({kit_info['qty']} unidades)\\n\\n"
+        if "kit_escolhido" in st.session_state:
+            kit = st.session_state["kit_escolhido"]
+            message += f"Kit escolhido: {kit['name']} ({kit['qty']} unidades)\\n\\n"
         for sabor, qtd in selected_flavors.items():
             preco_unit = next(f["price"] for f in flavors if f["name"] == sabor)
             message += f"{qtd}x {sabor} (R$ {preco_unit:.2f}/un)\\n"
@@ -135,15 +171,13 @@ st.markdown("---")
 
 # --- Rodapé ---
 st.markdown("""
-<hr style="margin-top: 2rem; margin-bottom: 1rem;">
-
-<div style="text-align: center; font-size: 0.9rem; color: #4A3B32;">
+<footer>
     &copy; 2025 Flor de Cacau Confeitaria - Ingredientes frescos, produtores locais e chocolate nobre.<br>
     Feito com ❤️ em Porto Alegre - RS<br>
-    <a href="https://www.instagram.com/confeitariaflordcacau/" target="_blank" style="color: #E91E63; text-decoration: none;">
-        📸 Siga-nos no Instagram: @confeitariaflordcacau
+    <a href="https://www.instagram.com/confeitariaflordcacau/" target="_blank" style="color: #FFD700; text-decoration: none;">
+        📸 Instagram: @confeitariaflordcacau
     </a>
-</div>
+</footer>
 """, unsafe_allow_html=True)
 
 
