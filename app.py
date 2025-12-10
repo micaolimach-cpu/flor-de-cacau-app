@@ -174,7 +174,7 @@ if "pedido" in st.session_state:
 st.markdown("---")
 
 # --- Pagamentos aceitos ---
-st.markdown("""
+st.markdown(""
 <div style=
     background-color:#FFF0E6;
     border:1px solid #E0C4A8;
@@ -206,6 +206,7 @@ footer_html = ""
 ""
 
 st.markdown(footer_html, unsafe_allow_html=True)
+
 
 
 
