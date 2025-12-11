@@ -63,7 +63,6 @@ st.markdown("<h1 style='text-align: center;'>Flor de Cacau</h1>", unsafe_allow_h
 st.markdown("<p style='text-align: center; font-size: 1.2rem;'>Kits de Brigadeiro para Eventos, Festas & Confraternizações</p>", unsafe_allow_html=True)
 
 st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
-st.button("🍬 Começar pedido")
 st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("---")
@@ -298,3 +297,4 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
